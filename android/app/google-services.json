@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "384985207660",
+    "firebase_url": "https://test-app-4bbd6-default-rtdb.firebaseio.com",
+    "project_id": "test-app-4bbd6",
+    "storage_bucket": "test-app-4bbd6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384985207660:android:032428658e3b6ff018d949",
+        "android_client_info": {
+          "package_name": "com.example.caffe_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384985207660-l7ci5sd6q0cv43q06udphre4chr11amq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.caffe_app",
+            "certificate_hash": "e6ca55d8f9a11ec081555040b68d49248f41ecbf"
+          }
+        },
+        {
+          "client_id": "384985207660-jf9bkshte7l2ljvdlc1svfdh8d93qalu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlS0Lk9t2VdX-ceVe9LinMMDYyWSQKeyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384985207660-jf9bkshte7l2ljvdlc1svfdh8d93qalu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "384985207660-flhf50ar7lrcqr82i9bd6gom8ht18egs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.caffeApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
