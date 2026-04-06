@@ -2,6 +2,7 @@ import 'package:caffe_app/core/theme/app_colors.dart';
 import 'package:caffe_app/features/cart/logic/cart_cubit.dart';
 import 'package:caffe_app/features/cart/logic/cart_state.dart';
 import 'package:caffe_app/features/order/presentation/widgets/order_section_card.dart';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +17,8 @@ class OrderItemsSummary extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Order Items',
+              Text(
+                AppLocalizations.of(context)!.orderItems,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -98,4 +99,3 @@ class _OrderItemRow extends StatelessWidget {
     );
   }
 }
-

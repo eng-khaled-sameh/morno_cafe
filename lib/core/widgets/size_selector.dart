@@ -1,5 +1,6 @@
 import 'package:caffe_app/core/theme/app_colors.dart';
 import 'package:caffe_app/features/home/data/models/product_model.dart';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class SizeSelector extends StatelessWidget {
@@ -24,6 +25,15 @@ class SizeSelector extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    String getTranslatedSize(BuildContext context, String size) {
+      final loc = AppLocalizations.of(context)!;
+      if (size == 'Minimum') return loc.minimum;
+      if (size == 'Medium') return loc.medium;
+      if (size == 'Single') return loc.single;
+      if (size == 'Double') return loc.doubleSize;
+      return size;
+    }
+
     final sizes = sizeType == ProductSizeType.minMedium
         ? ['Minimum', 'Medium']
         : ['Single', 'Double'];
@@ -32,9 +42,9 @@ class SizeSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (!isCompact) ...[
-          const Text(
-            'Size',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.size,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
               color: AppColors.textPrimary,
@@ -46,13 +56,15 @@ class SizeSelector extends StatelessWidget {
           children: [
             for (var i = 0; i < sizes.length; i++) ...[
               if (i > 0) SizedBox(width: isCompact ? 8 : 12),
-              Expanded(child: _SizeOption(
-                label: sizes[i],
-                priceLabel: priceForSize(sizes[i]),
-                selected: selectedSize == sizes[i],
-                onTap: () => onSizeSelected(sizes[i]),
-                isCompact: isCompact,
-              )),
+              Expanded(
+                child: _SizeOption(
+                  label: getTranslatedSize(context, sizes[i]),
+                  priceLabel: priceForSize(sizes[i]),
+                  selected: selectedSize == sizes[i],
+                  onTap: () => onSizeSelected(sizes[i]),
+                  isCompact: isCompact,
+                ),
+              ),
             ],
           ],
         ),

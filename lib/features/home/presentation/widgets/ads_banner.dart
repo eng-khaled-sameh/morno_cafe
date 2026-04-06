@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -78,9 +79,11 @@ class _AdsBannerState extends State<AdsBanner> {
             ),
           );
         } else {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Product not found')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.productNotFound),
+            ),
+          );
         }
       }
     } catch (e) {
@@ -218,7 +221,7 @@ class _AdsBannerState extends State<AdsBanner> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  'LIMITED OFFER',
+                                  AppLocalizations.of(context)!.limitedOffer,
                                   style: GoogleFonts.sora(
                                     fontSize: 8,
                                     fontWeight: FontWeight.bold,
@@ -281,7 +284,7 @@ class _AdsBannerState extends State<AdsBanner> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      'Order Now',
+                                      AppLocalizations.of(context)!.orderNow,
                                       style: GoogleFonts.sora(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,

@@ -1,3 +1,4 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,7 +10,7 @@ class TextOnboarding1 extends StatelessWidget {
     return SizedBox(
       width: 336,
       child: Text(
-        'Coffee so good,\nyour taste buds\nwill love it.',
+        AppLocalizations.of(context)!.onboardingTitle.replaceAll(', ', ',\n').replaceAll('buds ', 'buds\n'),
         textAlign: TextAlign.center,
         style: GoogleFonts.sora(
           fontSize: 34,

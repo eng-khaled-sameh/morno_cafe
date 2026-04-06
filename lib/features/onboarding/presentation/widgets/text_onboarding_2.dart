@@ -1,3 +1,4 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,7 +10,7 @@ class TextOnboarding2 extends StatelessWidget {
     return SizedBox(
       width: 314,
       child: Text(
-        'The best grain, the finest roast, the\npowerful flavor.',
+        AppLocalizations.of(context)!.onboardingSubtitle.replaceAll('the p', '\nthe p'),
         textAlign: TextAlign.center,
         style: GoogleFonts.sora(
           fontSize: 14,

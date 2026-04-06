@@ -1,8 +1,10 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:caffe_app/core/logic/auth_cubit.dart';
 import 'package:caffe_app/core/logic/auth_state.dart';
+
 class GoogleSignIn extends StatelessWidget {
   const GoogleSignIn({super.key});
 
@@ -12,10 +14,7 @@ class GoogleSignIn extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       },
@@ -40,9 +39,7 @@ class GoogleSignIn extends StatelessWidget {
             ),
             child: state is AuthLoading
                 ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0x8A000000),
-                    ),
+                    child: CircularProgressIndicator(color: Color(0x8A000000)),
                   )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +51,7 @@ class GoogleSignIn extends StatelessWidget {
                       ),
                       const SizedBox(width: 15),
                       Text(
-                        'Continue with Google',
+                        AppLocalizations.of(context)!.continueWithGoogle,
                         style: GoogleFonts.roboto(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,

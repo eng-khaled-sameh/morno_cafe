@@ -105,6 +105,29 @@ class ProductCard extends StatelessWidget {
                         },
                       ),
                     ),
+                    Positioned(
+                      bottom: 6,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: Text(
+                          'M O R N O',
+                          style: GoogleFonts.sora(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white.withOpacity(0.9),
+                            letterSpacing: 2.5,
+                            shadows: [
+                              const Shadow(
+                                blurRadius: 3.0,
+                                color: Colors.black87,
+                                offset: Offset(0, 1.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -141,7 +164,7 @@ class ProductCard extends StatelessWidget {
             ),
             const Spacer(),
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 12),
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -1,3 +1,4 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,7 +51,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
                     horizontal: 20,
                     vertical: 0,
                   ),
-                  hintText: 'Search coffee',
+                  hintText: AppLocalizations.of(context)!.search,
                   hintStyle: GoogleFonts.sora(
                     fontSize: 14,
                     color: const Color(0xFF989898),
@@ -114,4 +115,3 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
     );
   }
 }
-

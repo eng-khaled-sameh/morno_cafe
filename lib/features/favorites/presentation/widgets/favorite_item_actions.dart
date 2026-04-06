@@ -1,3 +1,4 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/favorites_item_model.dart';
 import '../../logic/favorites_cubit.dart';
@@ -26,7 +27,7 @@ class FavoriteItemActions extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           child: OrderNowButton(
-            text: 'Add to Cart',
+            text: AppLocalizations.of(context)!.addToCart,
             onPressed: () {
               final cartItem = CartItemModel(
                 id: item.id,

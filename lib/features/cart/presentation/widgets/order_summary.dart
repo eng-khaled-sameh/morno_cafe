@@ -1,3 +1,4 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:caffe_app/features/order/presentation/order_screen.dart';
@@ -32,19 +33,19 @@ class OrderSummary extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildRow('Subtotal', subtotal),
+          _buildRow(AppLocalizations.of(context)!.subtotal, subtotal),
           const SizedBox(height: 12),
-          _buildRow('Delivery Fee', deliveryFee),
+          _buildRow(AppLocalizations.of(context)!.deliveryFee, deliveryFee),
           const Divider(height: 32),
-          _buildRow('Total', total, isTotal: true),
+          _buildRow(AppLocalizations.of(context)!.total, total, isTotal: true),
           const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const OrderScreen()),
-                );
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const OrderScreen()));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
@@ -54,8 +55,8 @@ class OrderSummary extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Checkout',
+              child: Text(
+                AppLocalizations.of(context)!.checkout,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),

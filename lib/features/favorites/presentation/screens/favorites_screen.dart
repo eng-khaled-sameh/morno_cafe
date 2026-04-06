@@ -1,9 +1,10 @@
 import 'package:caffe_app/core/theme/app_colors.dart';
+import 'package:caffe_app/core/widgets/custom_app_bar.dart';
 import 'package:caffe_app/features/favorites/presentation/widgets/favorite_item_card.dart';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caffe_app/features/home/presentation/widgets/home_bottom_nav.dart';
-import 'package:caffe_app/core/widgets/custom_app_bar.dart';
 import '../../logic/favorites_cubit.dart';
 import '../../logic/favorites_state.dart';
 
@@ -14,7 +15,7 @@ class FavoritesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: 'Favorites'),
+      appBar: CustomAppBar(title: AppLocalizations.of(context)!.favorites),
       bottomNavigationBar: const HomeBottomNav(currentIndex: 1),
       body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {

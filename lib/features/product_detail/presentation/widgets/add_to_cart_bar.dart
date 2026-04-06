@@ -2,11 +2,16 @@ import 'package:caffe_app/core/theme/app_colors.dart';
 import 'package:caffe_app/features/cart/data/models/cart_item_model.dart';
 import 'package:caffe_app/features/cart/logic/cart_cubit.dart';
 import 'package:caffe_app/features/home/data/models/product_model.dart';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddToCartBar extends StatelessWidget {
-  const AddToCartBar({super.key, required this.product, required this.selectedSize});
+  const AddToCartBar({
+    super.key,
+    required this.product,
+    required this.selectedSize,
+  });
 
   final ProductModel product;
   final String selectedSize;
@@ -80,15 +85,18 @@ class AddToCartBar extends StatelessWidget {
                   context.read<CartCubit>().addItem(item);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('${product.name} added to cart'),
+                      content: Text(AppLocalizations.of(context)!.itemAdded),
                       duration: const Duration(seconds: 1),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
                 },
-                child: const Text(
-                  'Add to Cart',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                child: Text(
+                  AppLocalizations.of(context)!.addToCart,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
@@ -98,5 +106,3 @@ class AddToCartBar extends StatelessWidget {
     );
   }
 }
-
-

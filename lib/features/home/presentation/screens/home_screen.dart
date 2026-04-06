@@ -1,3 +1,4 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caffe_app/features/home/presentation/widgets/home_header.dart';
@@ -35,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.only(right: 12),
               child: CustomShimmer(
-                  width: 80, height: 38, borderRadius: BorderRadius.circular(12)),
+                width: 80,
+                height: 38,
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -80,19 +84,28 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Column(
                   children: [
-                    const SizedBox(height: 32),
+                    Image.asset(
+                      'assets/images/logo-3.png',
+                      height: 80,
+                      width: 200,
+                    ),
                     const HomeHeader(),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 12),
                     const HomeSearchBar(),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 12),
                     BlocBuilder<HomeCubit, HomeState>(
                       builder: (context, state) {
                         if (state is HomeSuccess) {
                           return AdsBanner(ads: state.ads);
-                        } else if (state is HomeLoading || state is HomeInitial) {
+                        } else if (state is HomeLoading ||
+                            state is HomeInitial) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: CustomShimmer(width: double.infinity, height: 140, borderRadius: BorderRadius.circular(16)),
+                            child: CustomShimmer(
+                              width: double.infinity,
+                              height: 140,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           );
                         }
                         return const SizedBox.shrink();
@@ -114,8 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text(state.message, textAlign: TextAlign.center),
                               const SizedBox(height: 10),
                               ElevatedButton(
-                                onPressed: () => context.read<HomeCubit>().getCategories(),
-                                child: const Text('Retry'),
+                                onPressed: () =>
+                                    context.read<HomeCubit>().getCategories(),
+                                child: Text(
+                                  AppLocalizations.of(context)!.retry,
+                                ),
                               ),
                             ],
                           ),
@@ -123,16 +139,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       } else if (state is HomeSuccess) {
                         final categories = state.categories;
                         if (categories.isEmpty) {
-                          return const Center(child: Text('No categories found.'));
+                          return Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.noProductsFound,
+                            ),
+                          );
                         }
-                        
+
                         if (_selectedIndex >= categories.length) {
                           _selectedIndex = 0;
                         }
-                        
+
                         final selectedCategory = categories[_selectedIndex];
-                        
-                        
+
                         return BlocBuilder<SearchCubit, SearchState>(
                           builder: (context, searchState) {
                             if (searchState is! SearchInitial) {
@@ -151,7 +170,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 18),
                                 Expanded(
-                                  child: ProductsGrid(products: selectedCategory.products),
+                                  child: ProductsGrid(
+                                    products: selectedCategory.products,
+                                  ),
                                 ),
                               ],
                             );
@@ -171,4 +192,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

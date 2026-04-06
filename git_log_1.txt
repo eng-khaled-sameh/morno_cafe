@@ -1,0 +1,36 @@
+commit 56a30c90fea2e2223670ad9b1732c998721993f5
+Author: eng-khaled-sameh <eng.khaled023@gmail.com>
+Date:   Mon Apr 6 01:41:16 2026 +0200
+
+    first commit
+
+diff --git a/lib/features/onboarding/presentation/widgets/text_onboarding_1.dart b/lib/features/onboarding/presentation/widgets/text_onboarding_1.dart
+new file mode 100644
+index 0000000..d5c8e06
+--- /dev/null
++++ b/lib/features/onboarding/presentation/widgets/text_onboarding_1.dart
+@@ -0,0 +1,24 @@
++import 'package:flutter/material.dart';
++import 'package:google_fonts/google_fonts.dart';
++
++class TextOnboarding1 extends StatelessWidget {
++  const TextOnboarding1({super.key});
++
++  @override
++  Widget build(BuildContext context) {
++    return SizedBox(
++      width: 336,
++      child: Text(
++        'Coffee so good,\nyour taste buds\nwill love it.',
++        textAlign: TextAlign.center,
++        style: GoogleFonts.sora(
++          fontSize: 34,
++          fontWeight: FontWeight.w600,
++          letterSpacing: 0.34,
++          color: Colors.white,
++          height: 1.15,
++        ),
++      ),
++    );
++  }
++}

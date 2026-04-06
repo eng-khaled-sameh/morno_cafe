@@ -5,6 +5,7 @@ import 'package:caffe_app/features/cart/logic/cart_state.dart';
 import 'package:caffe_app/features/order/presentation/widgets/order_action_button.dart';
 import 'package:caffe_app/features/order/presentation/widgets/order_items_summary.dart';
 import 'package:caffe_app/features/order/presentation/widgets/order_section_card.dart';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +55,7 @@ class _OrderScreenState extends State<OrderScreen> {
     super.dispose();
   }
 
-  bool _validateAndSubmit() {
+  bool _validateAndSubmit(BuildContext context) {
     bool isValid = true;
     setState(() {
       _nameError = null;
@@ -63,20 +64,20 @@ class _OrderScreenState extends State<OrderScreen> {
 
       final name = _nameController.text.trim();
       if (name.isEmpty || name.length < 3) {
-        _nameError = 'Name must be at least 3 characters';
+        _nameError = AppLocalizations.of(context)!.minCharacters(3);
         isValid = false;
       }
 
       final phone = _phoneController.text.trim();
       final digitsOnly = phone.replaceAll(RegExp(r'\D'), '');
       if (digitsOnly.length < 8) {
-        _phoneError = 'Enter a valid phone number (min 8 digits)';
+        _phoneError = AppLocalizations.of(context)!.invalidPhone;
         isValid = false;
       }
 
       final address = _addressController.text.trim();
       if (address.isEmpty || address.length < 10) {
-        _addressError = 'Address must be at least 10 characters';
+        _addressError = AppLocalizations.of(context)!.minCharacters(10);
         isValid = false;
       }
     });
@@ -105,8 +106,8 @@ class _OrderScreenState extends State<OrderScreen> {
                       children: [
                         EditableInfoRow(
                           icon: Icons.person_outline,
-                          label: 'Name',
-                          hintText: 'Enter your name',
+                          label: AppLocalizations.of(context)!.name,
+                          hintText: AppLocalizations.of(context)!.enterName,
                           controller: _nameController,
                           isRequired: true,
                           errorText: _nameError,
@@ -115,8 +116,8 @@ class _OrderScreenState extends State<OrderScreen> {
                         const SizedBox(height: 12),
                         EditableInfoRow(
                           icon: Icons.phone_outlined,
-                          label: 'Phone Number',
-                          hintText: 'Enter your phone number',
+                          label: AppLocalizations.of(context)!.phone,
+                          hintText: AppLocalizations.of(context)!.enterPhone,
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
                           isRequired: true,
@@ -126,19 +127,22 @@ class _OrderScreenState extends State<OrderScreen> {
                         const SizedBox(height: 12),
                         EditableInfoRow(
                           icon: Icons.location_on_outlined,
-                          label: 'Delivery Address',
-                          hintText: 'Enter your delivery address',
+                          label: AppLocalizations.of(context)!.address,
+                          hintText: AppLocalizations.of(context)!.enterAddress,
                           controller: _addressController,
                           keyboardType: TextInputType.streetAddress,
                           isRequired: true,
                           errorText: _addressError,
-                          onChanged: (_) => setState(() => _addressError = null),
+                          onChanged: (_) =>
+                              setState(() => _addressError = null),
                         ),
                         const SizedBox(height: 12),
                         EditableInfoRow(
                           icon: Icons.notes,
-                          label: 'Order Notes',
-                          hintText: 'Any special requests?',
+                          label: AppLocalizations.of(context)!.orderNotes,
+                          hintText: AppLocalizations.of(
+                            context,
+                          )!.specialInstructions,
                           controller: _notesController,
                           keyboardType: TextInputType.multiline,
                           maxLines: 2,
@@ -155,12 +159,12 @@ class _OrderScreenState extends State<OrderScreen> {
                     child: Column(
                       children: [
                         _PriceRow(
-                          label: 'Subtotal',
+                          label: AppLocalizations.of(context)!.subtotal,
                           value: state.subtotal,
                         ),
                         const SizedBox(height: 10),
                         _PriceRow(
-                          label: 'Delivery Fee',
+                          label: AppLocalizations.of(context)!.deliveryFee,
                           value: state.deliveryFee,
                         ),
                         const Padding(
@@ -168,7 +172,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           child: Divider(height: 1),
                         ),
                         _PriceRow(
-                          label: 'Total',
+                          label: AppLocalizations.of(context)!.total,
                           value: state.total,
                           isTotal: true,
                         ),
@@ -182,7 +186,7 @@ class _OrderScreenState extends State<OrderScreen> {
         ),
       ),
       bottomNavigationBar: OrderActionButton(
-        label: 'Place Order',
+        label: AppLocalizations.of(context)!.placeOrder,
         onPressed: () {
           if (context.read<CartCubit>().state.items.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -194,11 +198,11 @@ class _OrderScreenState extends State<OrderScreen> {
             return;
           }
 
-          if (_validateAndSubmit()) {
+          if (_validateAndSubmit(context)) {
             context.read<CartCubit>().clearCart();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Order placed successfully!'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.orderPlaced),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -243,4 +247,3 @@ class _PriceRow extends StatelessWidget {
     );
   }
 }
-

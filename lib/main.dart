@@ -1,4 +1,5 @@
 import 'package:caffe_app/features/home/presentation/screens/home_screen.dart';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +12,7 @@ import 'package:caffe_app/core/services/auth_service.dart';
 import 'package:caffe_app/core/logic/auth_cubit.dart';
 import 'package:caffe_app/core/logic/auth_state.dart';
 import 'package:caffe_app/features/search/logic/search_cubit.dart';
+import 'package:caffe_app/core/logic/language_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) =>
               AuthCubit(AuthService.instance)..checkAuthState(),
         ),
+        BlocProvider(create: (context) => LanguageCubit()),
         BlocProvider(create: (context) => HomeCubit()),
         BlocProvider(
           create: (context) => SearchCubit(context.read<HomeCubit>()),
@@ -43,32 +46,57 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => CartCubit()),
         BlocProvider(create: (context) => FavoritesCubit()),
       ],
-      child: MaterialApp(
-        navigatorKey: _navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Sora'),
-        builder: (context, child) {
-          return BlocListener<AuthCubit, AuthState>(
-            listenWhen: (previous, current) =>
-                current is AuthUnauthenticated &&
-                previous is AuthAuthenticated,
-            listener: (context, state) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _navigatorKey.currentState
-                    ?.popUntil((route) => route.isFirst);
-              });
+      child: BlocBuilder<LanguageCubit, Locale>(
+        builder: (context, locale) {
+          return MaterialApp(
+            locale: locale,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            navigatorKey: _navigatorKey,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(fontFamily: 'Sora'),
+            builder: (context, child) {
+              return Directionality(
+                textDirection: TextDirection.ltr,
+                child: BlocListener<AuthCubit, AuthState>(
+                  listenWhen: (previous, current) =>
+                      (current is AuthUnauthenticated &&
+                          previous is AuthAuthenticated) ||
+                      (current is AuthAuthenticated &&
+                          previous is AuthUnauthenticated),
+                  listener: (context, state) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (state is AuthUnauthenticated) {
+                        _navigatorKey.currentState?.pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const OnboardingScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      } else if (state is AuthAuthenticated) {
+                        _navigatorKey.currentState?.pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      }
+                    });
+                  },
+                  child: child ?? const SizedBox.shrink(),
+                ),
+              );
             },
-            child: child ?? const SizedBox.shrink(),
+            home: BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is AuthAuthenticated) {
+                  return const HomeScreen();
+                }
+                return const OnboardingScreen();
+              },
+            ),
           );
         },
-        home: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            if (state is AuthAuthenticated) {
-              return const HomeScreen();
-            }
-            return const OnboardingScreen();
-          },
-        ),
       ),
     );
   }

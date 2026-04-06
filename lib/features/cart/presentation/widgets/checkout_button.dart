@@ -1,4 +1,5 @@
 import 'package:caffe_app/core/theme/app_colors.dart';
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutButton extends StatelessWidget {
@@ -18,11 +19,11 @@ class CheckoutButton extends StatelessWidget {
           ),
           elevation: 0,
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Checkout',
+              AppLocalizations.of(context)!.checkout,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

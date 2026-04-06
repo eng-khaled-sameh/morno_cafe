@@ -1,3 +1,4 @@
+import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -15,7 +16,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomAppBar(title: 'My Cart'),
+      appBar: CustomAppBar(title: AppLocalizations.of(context)!.cart),
       bottomNavigationBar: const HomeBottomNav(currentIndex: 2),
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {
@@ -26,36 +27,49 @@ class CartScreen extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.symmetric(vertical: 10),
             children: [
-              ...state.items.map((item) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: CartItemCard(
-                      item: item,
-                      onIncrement: () =>
-                          context.read<CartCubit>().incrementQuantity(item.id, item.size),
-                      onDecrement: () =>
-                          context.read<CartCubit>().decrementQuantity(item.id, item.size),
-                      onRemove: () =>
-                          context.read<CartCubit>().removeItem(item.id, item.size),
+              ...state.items.map(
+                (item) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: CartItemCard(
+                    item: item,
+                    onIncrement: () => context
+                        .read<CartCubit>()
+                        .incrementQuantity(item.id, item.size),
+                    onDecrement: () => context
+                        .read<CartCubit>()
+                        .decrementQuantity(item.id, item.size),
+                    onRemove: () => context.read<CartCubit>().removeItem(
+                      item.id,
+                      item.size,
                     ),
-                  )),
+                  ),
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
                 child: TextFormField(
                   initialValue: state.notes,
                   maxLines: 3,
                   minLines: 1,
                   maxLength: 200,
-                  onChanged: (value) => context.read<CartCubit>().updateNotes(value),
+                  onChanged: (value) =>
+                      context.read<CartCubit>().updateNotes(value),
                   decoration: InputDecoration(
-                    labelText: 'Order Notes',
-                    hintText: 'Any special requests? e.g. less sugar, extra hot...',
+                    labelText: AppLocalizations.of(context)!.orderNotes,
+                    hintText: AppLocalizations.of(context)!.specialInstructions,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: const BorderSide(color: AppColors.greyLight),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 2,
+                      ),
                     ),
                     filled: true,
                     fillColor: Colors.white,
