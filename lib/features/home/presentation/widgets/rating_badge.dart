@@ -1,5 +1,6 @@
+import 'package:caffe_app/core/utils/app_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class RatingBadge extends StatelessWidget {
   final double rating;
@@ -23,9 +24,9 @@ class RatingBadge extends StatelessWidget {
           Icon(Icons.star, size: 10, color: const Color(0xFFFFC107)),
           const SizedBox(width: 2),
           Text(
-            rating.toStringAsFixed(1),
-            style: GoogleFonts.sora(
-              fontSize: 8,
+            AppFormatter.toArabicNumbers(rating.toStringAsFixed(1), Localizations.localeOf(context).languageCode),
+            style: const TextStyle(
+              fontSize: 10,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),

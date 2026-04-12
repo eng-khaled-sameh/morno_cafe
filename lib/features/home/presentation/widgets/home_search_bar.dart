@@ -1,7 +1,7 @@
 import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:caffe_app/features/search/logic/search_cubit.dart';
 import 'package:caffe_app/features/search/presentation/widgets/filter_bottom_sheet.dart';
 
@@ -42,7 +42,7 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
                   context.read<SearchCubit>().search(value);
                   setState(() {});
                 },
-                style: GoogleFonts.sora(fontSize: 14, color: Colors.white),
+                style: const TextStyle(fontSize: 14, color: Colors.white),
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
                   filled: true,
@@ -52,9 +52,9 @@ class _HomeSearchBarState extends State<HomeSearchBar> {
                     vertical: 0,
                   ),
                   hintText: AppLocalizations.of(context)!.search,
-                  hintStyle: GoogleFonts.sora(
-                    fontSize: 14,
-                    color: const Color(0xFF989898),
+                  hintStyle: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF989898),
                   ),
                   prefixIcon: const Icon(
                     Icons.search,

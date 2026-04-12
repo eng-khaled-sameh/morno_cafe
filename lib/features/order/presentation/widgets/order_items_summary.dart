@@ -5,12 +5,14 @@ import 'package:caffe_app/features/order/presentation/widgets/order_section_card
 import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 class OrderItemsSummary extends StatelessWidget {
   const OrderItemsSummary({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
     return BlocBuilder<CartCubit, CartState>(
       builder: (context, state) {
         return OrderSectionCard(
@@ -27,9 +29,9 @@ class OrderItemsSummary extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               if (state.items.isEmpty)
-                const Text(
-                  'No items in cart.',
-                  style: TextStyle(color: AppColors.textSecondary),
+                Text(
+                  langCode == 'ar' ? 'لا توجد عناصر في السلة.' : 'No items in cart.',
+                  style: const TextStyle(color: AppColors.textSecondary),
                 )
               else
                 ...state.items.map(
@@ -37,10 +39,11 @@ class OrderItemsSummary extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _OrderItemRow(
                       title: item.size.isEmpty
-                          ? item.title
-                          : '${item.title} — ${item.size}',
+                          ? (langCode == 'ar' && item.titleAr.isNotEmpty ? item.titleAr : item.title)
+                          : '${langCode == 'ar' && item.titleAr.isNotEmpty ? item.titleAr : item.title} — ${_translateSize(context, item.size)}',
                       quantity: item.quantity,
                       total: item.price * item.quantity,
+                      langCode: langCode,
                     ),
                   ),
                 ),
@@ -50,6 +53,18 @@ class OrderItemsSummary extends StatelessWidget {
       },
     );
   }
+
+  String _translateSize(BuildContext context, String size) {
+    if (size.isEmpty) return size;
+    final loc = AppLocalizations.of(context)!;
+    if (size == 'Minimum') return loc.minimum;
+    if (size == 'Medium') return loc.medium;
+    if (size == 'Single') return loc.single;
+    if (size == 'Double') return loc.doubleSize;
+    if (size == 'Regular') return loc.regular;
+    if (size == 'Can') return loc.can;
+    return size;
+  }
 }
 
 class _OrderItemRow extends StatelessWidget {
@@ -57,11 +72,13 @@ class _OrderItemRow extends StatelessWidget {
     required this.title,
     required this.quantity,
     required this.total,
+    required this.langCode,
   });
 
   final String title;
   final int quantity;
   final double total;
+  final String langCode;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +96,7 @@ class _OrderItemRow extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Text(
-          'x$quantity',
+          AppFormatter.toArabicNumbers('x$quantity', langCode),
           style: const TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w600,
@@ -87,12 +104,12 @@ class _OrderItemRow extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        Text(
-          'LE ${total.toStringAsFixed(2)}',
-          style: const TextStyle(
+        AppFormatter.formatPriceWidget(
+          total,
+          langCode,
+          const TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.w700,
-            color: AppColors.dark,
+            color: AppColors.textPrimary,
           ),
         ),
       ],

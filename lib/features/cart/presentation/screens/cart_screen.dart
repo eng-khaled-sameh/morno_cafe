@@ -21,7 +21,7 @@ class CartScreen extends StatelessWidget {
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {
           if (state.items.isEmpty) {
-            return _buildEmptyCart();
+            return _buildEmptyCart(context);
           }
 
           return ListView(
@@ -88,7 +88,8 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyCart() {
+  Widget _buildEmptyCart(BuildContext context) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -99,9 +100,9 @@ class CartScreen extends StatelessWidget {
             color: AppColors.greyLight,
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Your cart is empty',
-            style: TextStyle(
+          Text(
+            isArabic ? 'لا توجد منتجات في السلة' : 'Your cart is empty',
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: AppColors.textSecondary,

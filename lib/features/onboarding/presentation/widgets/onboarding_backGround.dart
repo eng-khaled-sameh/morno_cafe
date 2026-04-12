@@ -8,7 +8,7 @@ class OnboardingBackGround extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.67,
+        height: MediaQuery.of(context).size.height * 0.70,
         width: double.infinity,
         child: Image.asset(
           'assets/images/image_3.png',

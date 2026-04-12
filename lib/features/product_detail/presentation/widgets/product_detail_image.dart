@@ -64,7 +64,9 @@ class ProductDetailImage extends StatelessWidget {
                     final item = FavoritesItemModel(
                       id: product.id,
                       title: product.name,
+                      titleAr: product.nameAr,
                       description: product.description,
+                      descriptionAr: product.descriptionAr,
                       price: product.basePrice,
                       imageUrl: product.imageUrl,
                     );

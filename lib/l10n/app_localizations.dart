@@ -140,6 +140,12 @@ abstract class AppLocalizations {
   /// **'Go to Cart'**
   String get goToCart;
 
+  /// No description provided for @order.
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get order;
+
   /// No description provided for @orderNow.
   ///
   /// In en, this message translates to:
@@ -433,6 +439,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Order Items'**
   String get orderItems;
+
+  /// No description provided for @regular.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular'**
+  String get regular;
+
+  /// No description provided for @can.
+  ///
+  /// In en, this message translates to:
+  /// **'Can'**
+  String get can;
 }
 
 class _AppLocalizationsDelegate

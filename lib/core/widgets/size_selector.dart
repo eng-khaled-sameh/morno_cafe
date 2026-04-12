@@ -31,12 +31,26 @@ class SizeSelector extends StatelessWidget {
       if (size == 'Medium') return loc.medium;
       if (size == 'Single') return loc.single;
       if (size == 'Double') return loc.doubleSize;
+      if (size == 'Regular') return loc.regular;
+      if (size == 'Can') return loc.can;
       return size;
     }
 
-    final sizes = sizeType == ProductSizeType.minMedium
-        ? ['Minimum', 'Medium']
-        : ['Single', 'Double'];
+    final List<String> sizes;
+    switch (sizeType) {
+      case ProductSizeType.minMedium:
+        sizes = ['Minimum', 'Medium'];
+        break;
+      case ProductSizeType.singleDouble:
+        sizes = ['Single', 'Double'];
+        break;
+      case ProductSizeType.regularCan:
+        sizes = ['Regular', 'Can'];
+        break;
+      default:
+        sizes = [];
+    }
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

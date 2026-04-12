@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class CategoryChips extends StatelessWidget {
   const CategoryChips({super.key, required this.categories});
@@ -39,7 +39,7 @@ class _Chip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: GoogleFonts.sora(
+        style: TextStyle(
           fontSize: 14,
           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
           color: isSelected ? Colors.white : const Color(0xFF2F4B4E),

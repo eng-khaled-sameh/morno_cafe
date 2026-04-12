@@ -1,7 +1,7 @@
 import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:caffe_app/core/logic/auth_cubit.dart';
 import 'package:caffe_app/core/logic/auth_state.dart';
 
@@ -52,10 +52,10 @@ class GoogleSignIn extends StatelessWidget {
                       const SizedBox(width: 15),
                       Text(
                         AppLocalizations.of(context)!.continueWithGoogle,
-                        style: GoogleFonts.roboto(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
-                          color: const Color(0x8A000000),
+                          color: Color(0x8A000000),
                         ),
                       ),
                     ],

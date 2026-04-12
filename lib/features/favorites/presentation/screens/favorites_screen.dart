@@ -20,6 +20,7 @@ class FavoritesScreen extends StatelessWidget {
       body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
           if (state.items.isEmpty) {
+            final isArabic = Localizations.localeOf(context).languageCode == 'ar';
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -30,9 +31,9 @@ class FavoritesScreen extends StatelessWidget {
                     color: AppColors.greyLight,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'No favorites yet',
-                    style: TextStyle(
+                  Text(
+                    isArabic ? 'لا توجد منتجات في المفضلة' : 'No favorites yet',
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textSecondary,

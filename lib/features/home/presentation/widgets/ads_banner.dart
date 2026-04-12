@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:caffe_app/core/theme/app_colors.dart';
 import 'package:caffe_app/features/home/data/models/ad_model.dart';
 import 'package:caffe_app/core/services/firestore_service.dart';
@@ -101,6 +101,8 @@ class _AdsBannerState extends State<AdsBanner> {
       return const SizedBox.shrink();
     }
 
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 600),
       opacity: _isLoaded ? 1.0 : 0.0,
@@ -121,10 +123,17 @@ class _AdsBannerState extends State<AdsBanner> {
             itemBuilder: (context, index) {
               final ad = widget.ads[index];
 
-              String currentPriceStr = ad.adDescription;
+              final adDescription = isArabic && ad.adDescriptionAr.isNotEmpty
+                  ? ad.adDescriptionAr
+                  : ad.adDescription;
+              final adName = isArabic && ad.nameAr.isNotEmpty
+                  ? ad.nameAr
+                  : ad.name;
+
+              String currentPriceStr = adDescription;
               String oldPriceStr = '';
-              if (ad.adDescription.contains('~~')) {
-                final parts = ad.adDescription.split('~~');
+              if (adDescription.contains('~~')) {
+                final parts = adDescription.split('~~');
                 if (parts.length >= 3) {
                   currentPriceStr = parts[0].trim();
                   oldPriceStr = parts[1].trim();
@@ -157,7 +166,6 @@ class _AdsBannerState extends State<AdsBanner> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Right side image glow
                         Positioned(
                           right: -10,
                           top: -10,
@@ -222,7 +230,8 @@ class _AdsBannerState extends State<AdsBanner> {
                                 ),
                                 child: Text(
                                   AppLocalizations.of(context)!.limitedOffer,
-                                  style: GoogleFonts.sora(
+                                  style: TextStyle(
+                                    fontFamily: 'ReadexPro',
                                     fontSize: 8,
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 1.0,
@@ -233,24 +242,25 @@ class _AdsBannerState extends State<AdsBanner> {
                               const Spacer(),
                               // Product Name
                               Text(
-                                ad.name,
+                                adName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.sora(
-                                  fontSize: 18,
+                                style: const TextStyle(
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w800,
                                   color: Colors.white,
                                   height: 1.2,
                                 ),
                               ),
-                              const SizedBox(height: 2),
+                              const SizedBox(height: 8),
                               // Price styled
                               Wrap(
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: [
                                   Text(
                                     currentPriceStr,
-                                    style: GoogleFonts.sora(
+                                    style: TextStyle(
+                                      fontFamily: 'ReadexPro',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white,
@@ -260,8 +270,9 @@ class _AdsBannerState extends State<AdsBanner> {
                                     const SizedBox(width: 6),
                                     Text(
                                       oldPriceStr,
-                                      style: GoogleFonts.sora(
-                                        fontSize: 11,
+                                      style: TextStyle(
+                                        fontFamily: 'ReadexPro',
+                                        fontSize: 10,
                                         color: Colors.white.withOpacity(0.6),
                                         decoration: TextDecoration.lineThrough,
                                       ),
@@ -285,7 +296,8 @@ class _AdsBannerState extends State<AdsBanner> {
                                   children: [
                                     Text(
                                       AppLocalizations.of(context)!.orderNow,
-                                      style: GoogleFonts.sora(
+                                      style: TextStyle(
+                                        fontFamily: 'ReadexPro',
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.primary,

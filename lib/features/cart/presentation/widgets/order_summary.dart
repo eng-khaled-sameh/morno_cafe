@@ -2,6 +2,7 @@ import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import 'package:caffe_app/features/order/presentation/order_screen.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 class OrderSummary extends StatelessWidget {
   final double subtotal;
@@ -17,6 +18,7 @@ class OrderSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
@@ -33,11 +35,20 @@ class OrderSummary extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildRow(AppLocalizations.of(context)!.subtotal, subtotal),
+          _buildRow(AppLocalizations.of(context)!.subtotal, subtotal, langCode),
           const SizedBox(height: 12),
-          _buildRow(AppLocalizations.of(context)!.deliveryFee, deliveryFee),
+          _buildRow(
+            AppLocalizations.of(context)!.deliveryFee,
+            deliveryFee,
+            langCode,
+          ),
           const Divider(height: 32),
-          _buildRow(AppLocalizations.of(context)!.total, total, isTotal: true),
+          _buildRow(
+            AppLocalizations.of(context)!.total,
+            total,
+            langCode,
+            isTotal: true,
+          ),
           const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
@@ -66,7 +77,12 @@ class OrderSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String label, double value, {bool isTotal = false}) {
+  Widget _buildRow(
+    String label,
+    double value,
+    String langCode, {
+    bool isTotal = false,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -78,9 +94,10 @@ class OrderSummary extends StatelessWidget {
             color: isTotal ? AppColors.textPrimary : AppColors.textSecondary,
           ),
         ),
-        Text(
-          'LE ${value.toStringAsFixed(2)}',
-          style: TextStyle(
+        AppFormatter.formatPriceWidget(
+          value,
+          langCode,
+          TextStyle(
             fontSize: isTotal ? 18 : 16,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.w600,
             color: isTotal ? AppColors.primary : AppColors.textPrimary,

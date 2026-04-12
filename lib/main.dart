@@ -54,16 +54,14 @@ class _MyAppState extends State<MyApp> {
             supportedLocales: AppLocalizations.supportedLocales,
             navigatorKey: _navigatorKey,
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(fontFamily: 'Sora'),
+            theme: ThemeData(fontFamily: locale.languageCode == 'ar' ? 'Cairo' : 'ReadexPro'),
             builder: (context, child) {
               return Directionality(
                 textDirection: TextDirection.ltr,
                 child: BlocListener<AuthCubit, AuthState>(
                   listenWhen: (previous, current) =>
-                      (current is AuthUnauthenticated &&
-                          previous is AuthAuthenticated) ||
-                      (current is AuthAuthenticated &&
-                          previous is AuthUnauthenticated),
+                      current is AuthAuthenticated ||
+                      current is AuthUnauthenticated,
                   listener: (context, state) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       if (state is AuthUnauthenticated) {

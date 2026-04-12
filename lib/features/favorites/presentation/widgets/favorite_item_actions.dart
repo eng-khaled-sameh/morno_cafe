@@ -32,7 +32,9 @@ class FavoriteItemActions extends StatelessWidget {
               final cartItem = CartItemModel(
                 id: item.id,
                 title: item.title,
+                titleAr: item.titleAr,
                 subtitle: 'From Favorites',
+                subtitleAr: 'من المفضلة',
                 price: item.price,
                 imageUrl: item.imageUrl,
                 quantity: 1,
@@ -44,9 +46,12 @@ class FavoriteItemActions extends StatelessWidget {
                 priceDouble: item.price,
               );
               context.read<CartCubit>().addItem(cartItem);
+              final langCode = Localizations.localeOf(context).languageCode;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('${item.title} added to cart'),
+                  content: Text(
+                    langCode == 'ar' ? 'تم إضافة ${item.titleAr.isNotEmpty ? item.titleAr : item.title} للسلة' : '${item.title} added to cart',
+                  ),
                   duration: const Duration(seconds: 1),
                   behavior: SnackBarBehavior.floating,
                 ),

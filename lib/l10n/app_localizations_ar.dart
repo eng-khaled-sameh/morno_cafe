@@ -30,6 +30,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get goToCart => 'اذهب للسلة';
 
   @override
+  String get order => 'الطلب';
+
+  @override
   String get orderNow => 'اطلب الآن';
 
   @override
@@ -180,4 +183,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get orderItems => 'عناصر الطلب';
+
+  @override
+  String get regular => 'عادي';
+
+  @override
+  String get can => 'كانز';
 }

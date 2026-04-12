@@ -4,6 +4,7 @@ import 'package:caffe_app/features/favorites/presentation/widgets/favorite_item_
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:caffe_app/core/widgets/custom_shimmer.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 class FavoriteItemCard extends StatelessWidget {
   const FavoriteItemCard({super.key, required this.item});
@@ -12,6 +13,7 @@ class FavoriteItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
@@ -33,9 +35,10 @@ class FavoriteItemCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'LE ${item.price.toStringAsFixed(2)}',
-                  style: const TextStyle(
+                AppFormatter.formatPriceWidget(
+                  item.price,
+                  langCode,
+                  const TextStyle(
                     color: AppColors.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -43,7 +46,7 @@ class FavoriteItemCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  item.title,
+                  langCode == 'ar' && item.titleAr.isNotEmpty ? item.titleAr : item.title,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -52,7 +55,7 @@ class FavoriteItemCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  item.description,
+                  langCode == 'ar' && item.descriptionAr.isNotEmpty ? item.descriptionAr : item.description,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

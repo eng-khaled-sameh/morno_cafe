@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 class QuantityControl extends StatelessWidget {
   final int quantity;
@@ -22,7 +23,10 @@ class QuantityControl extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            quantity.toString(),
+            AppFormatter.toArabicNumbers(
+              quantity.toString(), 
+              Localizations.localeOf(context).languageCode,
+            ),
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

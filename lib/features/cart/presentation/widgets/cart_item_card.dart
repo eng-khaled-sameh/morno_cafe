@@ -8,6 +8,7 @@ import '../../data/models/cart_item_model.dart';
 import '../../logic/cart_cubit.dart';
 import 'quantity_control.dart';
 import 'package:caffe_app/core/widgets/size_selector.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 class CartItemCard extends StatelessWidget {
   final CartItemModel item;
@@ -25,6 +26,7 @@ class CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
     return SwipeToRemove(
       id: '${item.id}|${item.size}',
       onDismissed: onRemove,
@@ -79,7 +81,7 @@ class CartItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.title,
+                    langCode == 'ar' && item.titleAr.isNotEmpty ? item.titleAr : item.title,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -88,7 +90,7 @@ class CartItemCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    item.subtitle,
+                    langCode == 'ar' && item.subtitleAr.isNotEmpty ? item.subtitleAr : item.subtitle,
                     style: const TextStyle(
                       fontSize: 13,
                       color: AppColors.textSecondary,
@@ -98,11 +100,11 @@ class CartItemCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'LE ${item.price.toStringAsFixed(2)}',
-                        style: const TextStyle(
+                      AppFormatter.formatPriceWidget(
+                        item.price,
+                        langCode,
+                        const TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
                           color: AppColors.primary,
                         ),
                       ),
@@ -126,7 +128,7 @@ class CartItemCard extends StatelessWidget {
                           );
                     },
                     priceForSize: (size) =>
-                        'LE ${item.priceForSize(size).toStringAsFixed(2)}',
+                        AppFormatter.formatPrice(item.priceForSize(size), langCode),
                   ),
                 ],
               ),

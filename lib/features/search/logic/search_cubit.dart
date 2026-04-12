@@ -1,4 +1,4 @@
-﻿import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caffe_app/features/home/logic/home_cubit.dart';
 import 'package:caffe_app/features/home/logic/home_state.dart';
 import 'package:caffe_app/features/home/data/models/product_model.dart';
@@ -19,8 +19,7 @@ class SearchCubit extends Cubit<SearchState> {
       _currentCategoryId = categoryId == 'all' ? null : categoryId;
     }
 
-    if (_currentQuery.trim().isEmpty) {
-      _currentCategoryId = null;
+    if (_currentQuery.trim().isEmpty && _currentCategoryId == null) {
       emit(SearchInitial());
       return;
     }
@@ -41,11 +40,13 @@ class SearchCubit extends Cubit<SearchState> {
       }
 
       // Filter by query
-      if (_currentQuery.isNotEmpty) {
+      if (_currentQuery.trim().isNotEmpty) {
         final queryLower = _currentQuery.toLowerCase();
         allProducts = allProducts.where((p) {
           return p.name.toLowerCase().contains(queryLower) ||
-                 p.subtitle.toLowerCase().contains(queryLower);
+                 p.subtitle.toLowerCase().contains(queryLower) ||
+                 p.nameAr.contains(_currentQuery) ||
+                 p.subtitleAr.contains(_currentQuery);
         }).toList();
       }
 

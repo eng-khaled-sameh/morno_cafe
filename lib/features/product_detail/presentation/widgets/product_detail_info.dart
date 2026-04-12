@@ -3,6 +3,7 @@ import 'package:caffe_app/features/home/data/models/product_model.dart';
 import 'package:caffe_app/features/product_detail/presentation/widgets/product_rating_row.dart';
 import 'package:caffe_app/core/widgets/size_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 class ProductDetailInfo extends StatefulWidget {
   const ProductDetailInfo({
@@ -23,6 +24,8 @@ class ProductDetailInfo extends StatefulWidget {
 class _ProductDetailInfoState extends State<ProductDetailInfo> {
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
+    
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.surface,
@@ -36,7 +39,7 @@ class _ProductDetailInfoState extends State<ProductDetailInfo> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.product.name,
+            widget.product.getLocalizedName(langCode),
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w600,
@@ -46,7 +49,7 @@ class _ProductDetailInfoState extends State<ProductDetailInfo> {
           ),
           const SizedBox(height: 6),
           Text(
-            widget.product.subtitle,
+            widget.product.getLocalizedSubtitle(langCode),
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -58,8 +61,8 @@ class _ProductDetailInfoState extends State<ProductDetailInfo> {
           const SizedBox(height: 16),
           Divider(color: AppColors.greyLight.withValues(alpha: 0.7), height: 1),
           const SizedBox(height: 16),
-          const Text(
-            'Description',
+          Text(
+            langCode == 'ar' ? 'الوصف' : 'Description',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -68,7 +71,7 @@ class _ProductDetailInfoState extends State<ProductDetailInfo> {
           ),
           const SizedBox(height: 8),
           Text(
-            widget.product.description,
+            widget.product.getLocalizedDescription(langCode),
             style: const TextStyle(
               fontSize: 14,
               height: 1.5,
@@ -81,11 +84,14 @@ class _ProductDetailInfoState extends State<ProductDetailInfo> {
             sizeType: widget.product.sizeType,
             selectedSize: widget.selectedSize,
             onSizeSelected: widget.onSizeChanged,
-            priceForSize: (size) => 'LE ${widget.product.priceForSize(size).toStringAsFixed(2)}',
+            priceForSize: (size) {
+              return AppFormatter.formatPrice(widget.product.priceForSize(size), langCode);
+            },
           ),
         ],
       ),
     );
   }
+
 }
 

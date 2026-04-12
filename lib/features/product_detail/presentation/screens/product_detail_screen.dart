@@ -24,9 +24,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       _selectedSize = '';
     } else if (widget.product.sizeType == ProductSizeType.minMedium) {
       _selectedSize = 'Minimum';
+    } else if (widget.product.sizeType == ProductSizeType.regularCan) {
+      _selectedSize = 'Regular';
     } else {
       _selectedSize = 'Single';
     }
+
   }
 
   @override

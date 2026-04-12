@@ -35,6 +35,15 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: ReadexPro
+      fonts:
+        - asset: assets/fonts/ReadexPro-Regular.ttf
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Bold.ttf
     
 flutter_launcher_icons:
   android: true

@@ -28,6 +28,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
+    final isAr = langCode == 'ar';
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -41,9 +43,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Filter by Category',
-                style: TextStyle(
+              Text(
+                isAr ? 'تصفية حسب التصنيف' : 'Filter by Category',
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -65,9 +67,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    _buildChip('All', null),
+                    _buildChip(isAr ? 'الكل' : 'All', null),
                     for (var cat in categories)
-                      _buildChip(cat.name, cat.id),
+                      _buildChip(isAr && cat.nameAr.isNotEmpty ? cat.nameAr : cat.name, cat.id),
                   ],
                 );
               }
@@ -91,9 +93,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            child: const Text(
-              'Apply Filter',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+            child: Text(
+              isAr ? 'تطبيق التصفية' : 'Apply Filter',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           )
         ],

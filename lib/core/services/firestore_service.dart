@@ -6,25 +6,55 @@ import 'package:caffe_app/features/home/data/models/ad_model.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<double> getCanPrice() async {
+    try {
+      final doc = await _firestore.doc('addition/can').get();
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>;
+        return double.tryParse(data['can_price']?.toString() ?? '0.0') ?? 0.0;
+      }
+      return 0.0;
+    } catch (e) {
+      return 0.0;
+    }
+  }
+
   Future<List<CategoryModel>> getCategories() async {
     List<CategoryModel> categories = [];
     try {
-      QuerySnapshot categorySnapshot = await _firestore
-          .collection('categories')
-          .get();
+      final results = await Future.wait([
+        _firestore.collection('categories').get(),
+        getCanPrice(),
+      ]);
+
+      final categorySnapshot = results[0] as QuerySnapshot;
+      final canPrice = results[1] as double;
 
       final futures = categorySnapshot.docs.map((categoryDoc) async {
-        final results = await Future.wait([
+        final categoryId = categoryDoc.id;
+        final productResults = await Future.wait([
           categoryDoc.reference.collection('products_size').get(),
           categoryDoc.reference.collection('product_Portion').get(),
         ]);
 
-        final sizeProducts = results[0].docs
-            .map((d) => ProductModel.fromFirestore(d, source: 'products_size'))
+        final sizeProducts = (productResults[0] as QuerySnapshot)
+            .docs
+            .map((d) => ProductModel.fromFirestore(
+                  d,
+                  source: 'products_size',
+                  categoryId: categoryId,
+                  canPrice: canPrice,
+                ))
             .toList();
 
-        final portionProducts = results[1].docs
-            .map((d) => ProductModel.fromFirestore(d, source: 'product_Portion'))
+        final portionProducts = (productResults[1] as QuerySnapshot)
+            .docs
+            .map((d) => ProductModel.fromFirestore(
+                  d,
+                  source: 'product_Portion',
+                  categoryId: categoryId,
+                  canPrice: canPrice,
+                ))
             .toList();
 
         final category = CategoryModel.fromFirestore(
@@ -55,12 +85,31 @@ class FirestoreService {
 
   Future<ProductModel?> getProductByPath(String path) async {
     try {
-      final doc = await FirebaseFirestore.instance.doc(path).get();
+      final results = await Future.wait([
+        _firestore.doc(path).get(),
+        getCanPrice(),
+      ]);
+      final doc = results[0] as DocumentSnapshot;
+      final canPrice = results[1] as double;
+
       if (doc.exists) {
         final source = path.contains('product_Portion')
             ? 'product_Portion'
             : 'products_size';
-        return ProductModel.fromFirestore(doc, source: source);
+        
+        // Extract categoryId from path: categories/{categoryId}/products_size/{productId}
+        final pathSegments = path.split('/');
+        String categoryId = '';
+        if (pathSegments.length >= 2 && pathSegments[0] == 'categories') {
+          categoryId = pathSegments[1];
+        }
+
+        return ProductModel.fromFirestore(
+          doc,
+          source: source,
+          categoryId: categoryId,
+          canPrice: canPrice,
+        );
       }
       return null;
     } catch (e) {
@@ -68,4 +117,5 @@ class FirestoreService {
     }
   }
 }
+
 

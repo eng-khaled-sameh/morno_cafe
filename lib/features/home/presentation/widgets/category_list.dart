@@ -1,5 +1,5 @@
-﻿import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+
 import 'package:caffe_app/core/theme/app_colors.dart';
 import 'package:caffe_app/features/home/data/models/category_model.dart';
 
@@ -17,6 +17,7 @@ class CategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
     return SizedBox(
       height: 38,
       child: ListView.separated(
@@ -28,6 +29,8 @@ class CategoryList extends StatelessWidget {
           final isSelected = index == selectedIndex;
           final category = categories[index];
           
+          final categoryName = isArabic && category.nameAr.isNotEmpty ? category.nameAr : category.name;
+          
           return GestureDetector(
             onTap: () => onCategorySelected(index),
             child: Container(
@@ -38,8 +41,8 @@ class CategoryList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                category.name,
-                style: GoogleFonts.sora(
+                categoryName,
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                   color: isSelected ? Colors.white : const Color(0xFF2F4B4E),

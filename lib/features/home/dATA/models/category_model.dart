@@ -4,11 +4,13 @@ import 'package:caffe_app/features/home/data/models/product_model.dart';
 class CategoryModel {
   final String id;
   final String name;
+  final String nameAr;
   final List<ProductModel> products;
 
   CategoryModel({
     required this.id,
     required this.name,
+    required this.nameAr,
     required this.products,
   });
 
@@ -17,6 +19,7 @@ class CategoryModel {
     return CategoryModel(
       id: doc.id,
       name: data['category'] as String? ?? 'Unknown Category',
+      nameAr: data['category_ar'] as String? ?? '',
       products: productsList,
     );
   }

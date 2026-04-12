@@ -4,13 +4,14 @@ import 'package:caffe_app/core/widgets/custom_shimmer.dart';
 import 'package:caffe_app/features/home/data/models/product_model.dart';
 import 'package:caffe_app/features/product_detail/presentation/screens/product_detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:caffe_app/features/home/presentation/widgets/rating_badge.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:caffe_app/features/cart/logic/cart_cubit.dart';
 import 'package:caffe_app/features/cart/data/models/cart_item_model.dart';
 import 'package:caffe_app/features/favorites/logic/favorites_cubit.dart';
 import 'package:caffe_app/features/favorites/logic/favorites_state.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 import '../../../favorites/data/models/favorites_item_model.dart';
 
 class ProductCard extends StatelessWidget {
@@ -19,6 +20,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
+
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: () {
@@ -44,13 +47,14 @@ class ProductCard extends StatelessWidget {
                 child: Stack(
                   children: [
                     SizedBox(
-                      height: 132,
+                      height: 118,
                       width: double.infinity,
                       child: product.imageUrl.startsWith('http')
                           ? CachedNetworkImage(
                               imageUrl: product.imageUrl,
                               fit: BoxFit.cover,
-                              placeholder: (context, url) => const CustomShimmer(),
+                              placeholder: (context, url) =>
+                                  const CustomShimmer(),
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                             )
@@ -79,7 +83,9 @@ class ProductCard extends StatelessWidget {
                               final favItem = FavoritesItemModel(
                                 id: product.id,
                                 title: product.name,
+                                titleAr: product.nameAr,
                                 description: product.description,
+                                descriptionAr: product.descriptionAr,
                                 price: product.basePrice,
                                 imageUrl: product.imageUrl,
                               );
@@ -112,7 +118,7 @@ class ProductCard extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'M O R N O',
-                          style: GoogleFonts.sora(
+                          style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
                             color: Colors.white.withOpacity(0.9),
@@ -139,10 +145,10 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                    product.getLocalizedName(langCode),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.sora(
+                    style: TextStyle(fontFamily: 'ReadexPro',
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFF2F2D2C),
@@ -150,10 +156,10 @@ class ProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    product.subtitle,
+                    product.getLocalizedSubtitle(langCode),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.sora(
+                    style: TextStyle(fontFamily: 'ReadexPro',
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xFF9B9B9B),
@@ -168,12 +174,12 @@ class ProductCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'LE ${product.basePrice.toStringAsFixed(2)}',
-                    style: GoogleFonts.sora(
+                  AppFormatter.formatPriceWidget(
+                    product.basePrice,
+                    langCode,
+                    const TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF2F4B4E),
+                      color: Color(0xFF2F4B4E),
                     ),
                   ),
                   GestureDetector(
@@ -181,13 +187,16 @@ class ProductCard extends StatelessWidget {
                       final defaultSize = switch (product.sizeType) {
                         ProductSizeType.minMedium => 'Minimum',
                         ProductSizeType.singleDouble => 'Single',
+                        ProductSizeType.regularCan => 'Regular',
                         ProductSizeType.noSize => '',
                       };
 
                       final cartItem = CartItemModel(
                         id: product.id,
                         title: product.name,
+                        titleAr: product.nameAr,
                         subtitle: product.subtitle,
+                        subtitleAr: product.subtitleAr,
                         price: product.priceForSize(defaultSize),
                         imageUrl: product.imageUrl,
                         quantity: 1,
@@ -202,7 +211,9 @@ class ProductCard extends StatelessWidget {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('${product.name} added to cart'),
+                          content: Text(
+                            langCode == 'ar' ? 'تم إضافة ${product.nameAr.isNotEmpty ? product.nameAr : product.name} للسلة' : '${product.name} added to cart',
+                          ),
                           duration: const Duration(seconds: 1),
                           behavior: SnackBarBehavior.floating,
                         ),
@@ -231,4 +242,3 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
-

@@ -1,4 +1,4 @@
-﻿import 'package:caffe_app/features/home/data/models/product_model.dart';
+import 'package:caffe_app/features/home/data/models/product_model.dart';
 import 'package:caffe_app/features/home/presentation/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
@@ -9,20 +9,22 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: GridView.builder(
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      sliver: SliverGrid(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           mainAxisExtent: 238,
         ),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ProductCard(product: product);
-        },
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final product = products[index];
+            return ProductCard(product: product);
+          },
+          childCount: products.length,
+        ),
       ),
     );
   }

@@ -4,13 +4,17 @@ enum ProductSizeType {
   minMedium,
   singleDouble,
   noSize,
+  regularCan,
 }
 
 class ProductModel {
   final String id;
   final String name;
+  final String nameAr;
   final String subtitle;
+  final String subtitleAr;
   final String description;
+  final String descriptionAr;
   final String imageUrl;
   final double rating;
   final ProductSizeType sizeType;
@@ -19,12 +23,16 @@ class ProductModel {
   final double priceSingle;
   final double priceDouble;
   final String productPath;
+  final double canPrice;
 
   ProductModel({
     required this.id,
     required this.name,
+    required this.nameAr,
     required this.subtitle,
+    required this.subtitleAr,
     required this.description,
+    required this.descriptionAr,
     required this.imageUrl,
     required this.rating,
     required this.sizeType,
@@ -33,11 +41,14 @@ class ProductModel {
     required this.priceSingle,
     required this.priceDouble,
     required this.productPath,
+    this.canPrice = 0.0,
   });
 
   factory ProductModel.fromFirestore(
     DocumentSnapshot doc, {
     required String source,
+    required String categoryId,
+    double canPrice = 0.0,
   }) {
     final data = doc.data() as Map<String, dynamic>? ?? {};
 
@@ -54,7 +65,11 @@ class ProductModel {
 
     late final ProductSizeType type;
     if (source == 'products_size') {
-      type = priceMin > 0 ? ProductSizeType.minMedium : ProductSizeType.noSize;
+      if (priceMin == 0 && categoryId == 'cold_beverages') {
+        type = ProductSizeType.regularCan;
+      } else {
+        type = priceMin > 0 ? ProductSizeType.minMedium : ProductSizeType.noSize;
+      }
     } else if (source == 'product_Portion') {
       type = ProductSizeType.singleDouble;
     } else {
@@ -64,8 +79,11 @@ class ProductModel {
     return ProductModel(
       id: doc.id,
       name: data['name'] as String? ?? 'Unknown Product',
+      nameAr: data['name_ar'] as String? ?? data['name'] as String? ?? '',
       subtitle: data['subtitle'] as String? ?? '',
+      subtitleAr: data['subtitle_ar'] as String? ?? data['subtitle'] as String? ?? '',
       description: data['description'] as String? ?? '',
+      descriptionAr: data['description_ar'] as String? ?? data['description'] as String? ?? '',
       imageUrl: (data['imageUrl'] ?? data['imagePath'] ?? '') as String,
       rating: double.tryParse(data['rating']?.toString() ?? '0.0') ?? 0.0,
       sizeType: type,
@@ -74,7 +92,20 @@ class ProductModel {
       priceSingle: priceSingle,
       priceDouble: priceDouble,
       productPath: data['productPath'] as String? ?? '',
+      canPrice: canPrice,
     );
+  }
+
+  String getLocalizedName(String langCode) {
+    return langCode == 'ar' ? nameAr : name;
+  }
+
+  String getLocalizedSubtitle(String langCode) {
+    return langCode == 'ar' ? subtitleAr : subtitle;
+  }
+
+  String getLocalizedDescription(String langCode) {
+    return langCode == 'ar' ? descriptionAr : description;
   }
 
   double get basePrice {
@@ -83,6 +114,8 @@ class ProductModel {
         return priceMin;
       case ProductSizeType.singleDouble:
         return priceSingle;
+      case ProductSizeType.regularCan:
+        return priceMedium;
       case ProductSizeType.noSize:
         return priceMedium;
     }
@@ -94,6 +127,8 @@ class ProductModel {
         return ['Minimum', 'Medium'];
       case ProductSizeType.singleDouble:
         return ['Single', 'Double'];
+      case ProductSizeType.regularCan:
+        return ['Regular', 'Can'];
       case ProductSizeType.noSize:
         return [];
     }
@@ -109,8 +144,13 @@ class ProductModel {
         return priceSingle;
       case 'Double':
         return priceDouble;
+      case 'Regular':
+        return priceMedium;
+      case 'Can':
+        return priceMedium + canPrice;
       default:
         return basePrice;
     }
   }
 }
+

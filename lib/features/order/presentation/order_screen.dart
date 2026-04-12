@@ -8,6 +8,7 @@ import 'package:caffe_app/features/order/presentation/widgets/order_section_card
 import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 import 'widgets/editable_info_row.dart';
 
@@ -86,10 +87,11 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final langCode = Localizations.localeOf(context).languageCode;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomAppBar(
-        title: 'Order',
+        title: AppLocalizations.of(context)!.order,
         onBackPress: () => Navigator.pop(context),
       ),
       body: SafeArea(
@@ -161,11 +163,13 @@ class _OrderScreenState extends State<OrderScreen> {
                         _PriceRow(
                           label: AppLocalizations.of(context)!.subtotal,
                           value: state.subtotal,
+                          langCode: langCode,
                         ),
                         const SizedBox(height: 10),
                         _PriceRow(
                           label: AppLocalizations.of(context)!.deliveryFee,
                           value: state.deliveryFee,
+                          langCode: langCode,
                         ),
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 14),
@@ -175,6 +179,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           label: AppLocalizations.of(context)!.total,
                           value: state.total,
                           isTotal: true,
+                          langCode: langCode,
                         ),
                       ],
                     ),
@@ -190,8 +195,8 @@ class _OrderScreenState extends State<OrderScreen> {
         onPressed: () {
           if (context.read<CartCubit>().state.items.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Your cart is empty.'),
+              SnackBar(
+                content: Text(langCode == 'ar' ? 'السلة فارغة.' : 'Your cart is empty.'),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -218,11 +223,13 @@ class _PriceRow extends StatelessWidget {
   const _PriceRow({
     required this.label,
     required this.value,
+    required this.langCode,
     this.isTotal = false,
   });
 
   final String label;
   final double value;
+  final String langCode;
   final bool isTotal;
 
   @override
@@ -232,17 +239,20 @@ class _PriceRow extends StatelessWidget {
       fontWeight: isTotal ? FontWeight.w700 : FontWeight.w500,
       color: isTotal ? AppColors.dark : AppColors.textSecondary,
     );
-    final valueStyle = TextStyle(
-      fontSize: isTotal ? 18 : 14,
-      fontWeight: isTotal ? FontWeight.w800 : FontWeight.w600,
-      color: isTotal ? AppColors.primary : AppColors.dark,
-    );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: labelStyle),
-        Text('LE ${value.toStringAsFixed(2)}', style: valueStyle),
+        AppFormatter.formatPriceWidget(
+          value,
+          langCode,
+          TextStyle(
+            fontSize: isTotal ? 18 : 14,
+            fontWeight: isTotal ? FontWeight.w800 : FontWeight.w600,
+            color: isTotal ? AppColors.primary : AppColors.dark,
+          ),
+        ),
       ],
     );
   }

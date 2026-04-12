@@ -5,6 +5,7 @@ import 'package:caffe_app/features/home/data/models/product_model.dart';
 import 'package:caffe_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:caffe_app/core/utils/app_formatter.dart';
 
 class AddToCartBar extends StatelessWidget {
   const AddToCartBar({
@@ -35,8 +36,8 @@ class AddToCartBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Price',
+                  Text(
+                    Localizations.localeOf(context).languageCode == 'ar' ? 'السعر' : 'Price',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
@@ -44,10 +45,11 @@ class AddToCartBar extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'LE ${product.priceForSize(selectedSize).toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 18,
+                  AppFormatter.formatPriceWidget(
+                    product.priceForSize(selectedSize),
+                    Localizations.localeOf(context).languageCode,
+                    const TextStyle(
+                      fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primary,
                     ),
@@ -71,7 +73,9 @@ class AddToCartBar extends StatelessWidget {
                   final item = CartItemModel(
                     id: product.id,
                     title: product.name,
+                    titleAr: product.nameAr,
                     subtitle: product.subtitle,
+                    subtitleAr: product.subtitleAr,
                     price: product.priceForSize(selectedSize),
                     imageUrl: product.imageUrl,
                     quantity: 1,
@@ -82,6 +86,7 @@ class AddToCartBar extends StatelessWidget {
                     priceSingle: product.priceSingle,
                     priceDouble: product.priceDouble,
                   );
+
                   context.read<CartCubit>().addItem(item);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

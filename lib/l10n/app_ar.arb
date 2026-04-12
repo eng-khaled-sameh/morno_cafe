@@ -7,6 +7,7 @@
   "search": "ابحث عن مشروبك المفضل...",
   "addToCart": "أضف للسلة",
   "goToCart": "اذهب للسلة",
+  "order": "الطلب",
   "orderNow": "اطلب الآن",
   "checkout": "إتمام الطلب",
   "total": "الإجمالي",
@@ -65,5 +66,8 @@
   "signOutConfirmation": "هل أنت متأكد من تسجيل الخروج؟",
   "cancel": "إلغاء",
   "ok": "حسناً",
-  "orderItems": "عناصر الطلب"
+  "orderItems": "عناصر الطلب",
+  "regular": "عادي",
+  "can": "كانز"
 }
+

@@ -3,7 +3,9 @@ import 'package:caffe_app/features/home/data/models/product_model.dart';
 class CartItemModel {
   final String id;
   final String title;
+  final String titleAr;
   final String subtitle;
+  final String subtitleAr;
   final double price;
   final String imageUrl;
   final int quantity;
@@ -17,7 +19,9 @@ class CartItemModel {
   CartItemModel({
     required this.id,
     required this.title,
+    required this.titleAr,
     required this.subtitle,
+    required this.subtitleAr,
     required this.price,
     required this.imageUrl,
     required this.size,
@@ -42,15 +46,22 @@ class CartItemModel {
         return priceSingle;
       case 'Double':
         return priceDouble;
+      case 'Regular':
+        return priceMedium;
+      case 'Can':
+        return priceMedium + (price - priceMedium).abs() > 0.1 ? price : priceMedium;
       default:
         return price;
     }
+
   }
 
   CartItemModel copyWith({
     String? id,
     String? title,
+    String? titleAr,
     String? subtitle,
+    String? subtitleAr,
     double? price,
     String? imageUrl,
     int? quantity,
@@ -64,7 +75,9 @@ class CartItemModel {
     return CartItemModel(
       id: id ?? this.id,
       title: title ?? this.title,
+      titleAr: titleAr ?? this.titleAr,
       subtitle: subtitle ?? this.subtitle,
+      subtitleAr: subtitleAr ?? this.subtitleAr,
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
       quantity: quantity ?? this.quantity,
